@@ -10,7 +10,7 @@ please fork and checkout as you need.
 
     base - Server configurations and automatic scripts
     www.moztw.org - Main MozTW website
-    forum.moztw.org - MozTW Forum    
+    forum.moztw.org - MozTW Forum
     irclog.moztw.org - Log Archive for #mozilla-taiwan on irc.mozilla.org and #moztw on Telegram.
     translate.moztw.org - Localization system related stuff
     planet.moztw.org - A Planetplanet installation for MozTW Planet http://planet.moztw.org/
@@ -56,7 +56,7 @@ You can do shallow clone to get this repo more quickly.
    Also if you want to stop the virtual machine running, run `vagrant halt`.
 
 ### Using Node.js directly
-1. Install [nodejs](http://nodejs.org/) and [npm](https://www.npmjs.org/) in your system. 
+1. Install [nodejs](http://nodejs.org/) and [npm](https://www.npmjs.org/) in your system.
    * On Windows, you also need `Microsoft Visual C++ Redistributable Package`.
    * On Ubuntu/Debian, you also need `nodejs-legacy` package.
 2. Run `npm install` in repo directory.
@@ -79,14 +79,14 @@ The second step is adding virtual host configs to your Apache configuration:
 
 ```apache
 <VirtualHost *:80>
+  DocumentRoot /path/to/this/repo/
   ServerName moztw.yourdomain.name
   ServerAdmin admin@yourdomain.name
-  DocumentRoot /path/to/this/repo/
-  <Directory /path/to/this/repo>
+  <Directory /path/to/this/repo/>
+    DirectoryIndex index.shtml
     Options FollowSymLinks Includes
-    SSILegacyExprParse on
     AllowOverride All
-    Order allow,deny
+    SSILegacyExprParser on
     Require all granted
   </Directory>
 </VirtualHost>
@@ -120,6 +120,20 @@ server {
 ```
 
 Note that we're not running Nginx server on the hosting site, you might encounter some problems, e.g., _.htaccess_ is not supported.
+
+### Travis CI
+You nead to go `travis-ci.org`, open project to build, and modify project build settings to add Environment Variables of `GITHUB_TOKEN`.
+`GITHUB_TOKEN` can get in Settings > Developer settings > Personal access tokens > Generate new token.
+
+Detailed description: https://docs.travis-ci.com/user/getting-started/
+
+- `.travis.yml` is Travis CI config file. It do about Install apache , Config apache , web craker all website page and then git push gh-pages branch.
+- `.build/patch.js` will patch all shtml file #include path.
+- `.build/build.js` will web craker all website page.
+- `.build/moztw-apache.conf` is apache config file in Travis CI.
+
+Modify `CNAME` file to config github page custom domain.
+
 
 ## Coding Style
 * Please always use LF on line ending, and set 2/4 space characters as indent according to the original style of each files.
